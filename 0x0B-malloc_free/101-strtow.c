@@ -1,38 +1,154 @@
+#include <stdlib.h>
+		
 #include "main.h"
+		
 
+		
 /**
-* str_concat - a function that concatenates two strings.
-*@s1:First string
-*@s2:Second string
-*
-*Return: NULL in case of failure , but pointer to new string in
-*case of success
-*/
-
-char *str_concat(char *s1, char *s2)
+		
+ *  * count_word - helper function to count the number of words in a string
+		
+ *   * @s: string to evaluate
+		
+ *    *
+		
+ *     * Return: number of words
+		
+ *      */
+		
+int count_word(char *s)
+		
 {
-	char *concat_str;
-	int index, concat_index = 0,  len = 0;
+		
+		int flag, c, w;
+		
 
-	if (s1 == NULL)
-		s1 = "";
+		
+			flag = 0;
+		
+				w = 0;
+		
 
-	if (s2 == NULL)
-		s2 = "";
+		
+					for (c = 0; s[c] != '\0'; c++)
+		
+							{
+		
+										if (s[c] == ' ')
+		
+														flag = 0;
+		
+												else if (flag == 0)
+		
+															{
+		
+																			flag = 1;
+		
+																						w++;
+		
+																								}
+		
+													}
+		
 
-	for (index = 0; s1[index] || s2[index]; index++)
-		len++;
-
-	concat_str = malloc(sizeof(char) * len);
-
-	if (concat_str == NULL)
-		return (NULL);
-
-	for (index = 0; s1[index]; index++)
-		concat_str[concat_index++] = s1[index];
-
-	for (index = 0; s2[index]; index++)
-		concat_str[concat_index++] = s2[index];
-
-	return (concat_str);
+		
+						return (w);
+		
 }
+		
+/**
+		
+ * **strtow - splits a string into words
+		
+ * @str: string to split
+		
+ *
+		
+ * Return: pointer to an array of strings (Success)
+		
+ * or NULL (Error)
+		
+ */
+		
+char **strtow(char *str)
+		
+{
+		
+	char **matrix, *tmp;
+		
+	int i, k = 0, len = 0, words, c = 0, start, end;
+		
+
+		
+	while (*(str + len))
+		
+		len++;
+		
+	words = count_word(str);
+		
+	if (words == 0)
+		
+		return (NULL);
+		
+
+		
+	matrix = (char **) malloc(sizeof(char *) * (words + 1));
+		
+	if (matrix == NULL)
+		
+		return (NULL);
+		
+
+		
+	for (i = 0; i <= len; i++)
+		
+	{
+		
+		if (str[i] == ' ' || str[i] == '\0')
+		
+		{
+		
+			if (c)
+		
+			{
+		
+				end = i;
+		
+				tmp = (char *) malloc(sizeof(char) * (c + 1));
+		
+				if (tmp == NULL)
+		
+					return (NULL);
+		
+				while (start < end)
+		
+					*tmp++ = str[start++];
+		
+				*tmp = '\0';
+		
+				matrix[k] = tmp - c;
+		
+				k++;
+		
+				c = 0;
+		
+			}
+		
+		}
+		
+		else if (c++ == 0)
+		
+			start = i;
+		
+	}
+		
+
+		
+	matrix[k] = NULL;
+		
+
+		
+	return (matrix);
+		
+}
+
